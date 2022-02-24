@@ -18,7 +18,7 @@ var storage;
 (async function () {
     storage = await new Storage({email: config.EMAIL, password: config.PASSWORD}).ready;
     console.log('mega.nz account logged.');
-}())
+}());
 
 //When someone visit webpage
 app.get("/", function(req, res) {
