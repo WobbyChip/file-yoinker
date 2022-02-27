@@ -30,6 +30,14 @@ async function getFile(item) {
 }
 
 
+function BytesToSize(bytes) {
+    var sizes = ["Bytes", "KB", "MB", "GB", "TB"];
+    if (bytes == 0) return "0 Byte";
+    var i = parseInt(Math.floor(Math.log(bytes)/Math.log(1024)));
+    return Math.round(bytes/Math.pow(1024, i), 2) + ' ' + sizes[i];
+}
+
+
 async function readFile(file) {
     return new Promise(function(resolve) {
         var reader = new FileReader();
@@ -68,6 +76,7 @@ async function traverseFileTree(item, fid) {
         var count = uploading_file.allow ? 1 : 0;
 
         if (uploading_file.allow) {
+            console.log(`fid [${fid}] -> ${file.name} | Size: ${BytesToSize(file.size)}`);
             uploading_file.done = false;
             socket.emit("file_data", await readFile(file));
             while (!uploading_file.done) { await Wait(1); }
